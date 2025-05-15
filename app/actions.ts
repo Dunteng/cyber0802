@@ -147,6 +147,6 @@ export const signOutAction = async () => {
 };
 
 const isWhiteEmail = (email: string) => {
-  const whiteEmail = safeJsonParse(process.env.WHITE_EMAIL || "[]");
+  const whiteEmail = safeJsonParse(process.env.NEXT_PUBLIC_WHITE_EMAIL || "[]");
   return whiteEmail?.findIndex((item: any) => item.email === email) !== -1;
 };
