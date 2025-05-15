@@ -43,11 +43,10 @@ export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const whiteEmail = safeJsonParse(process.env.WHITE_EMAIL || '[]');
-  if (!whiteEmail.includes(email)) {
+  if (checkWhiteEmail(email)) {
     return encodedRedirect("error", "/sign-in", "error user");
   }
-  
+
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithPassword({
@@ -64,6 +63,9 @@ export const signInAction = async (formData: FormData) => {
 
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
+  if (email && checkWhiteEmail(email)) {
+    return encodedRedirect("error", "/forgot-password", "Email is error");
+  }
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
   const callbackUrl = formData.get("callbackUrl")?.toString();
@@ -138,3 +140,8 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+const checkWhiteEmail = (email: string) => {
+  const whiteEmail = safeJsonParse(process.env.WHITE_EMAIL || '[]');
+  return !whiteEmail.find((item: any) => item.email === email)
+}
