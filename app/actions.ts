@@ -45,11 +45,10 @@ export const signInAction = async (formData: FormData) => {
 
   const whiteEmail = safeJsonParse(process.env.WHITE_EMAIL || '[]');
   if (!whiteEmail.includes(email)) {
-    return
+    return encodedRedirect("error", "/sign-in", "error user");
   }
   
   const supabase = await createClient();
-
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
