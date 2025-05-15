@@ -143,5 +143,5 @@ export const signOutAction = async () => {
 
 const checkWhiteEmail = (email: string) => {
   const whiteEmail = safeJsonParse(process.env.WHITE_EMAIL || '[]');
-  return !whiteEmail.find((item: any) => item.email === email)
+  return !whiteEmail?.find((item: any) => item.email === email)
 }
