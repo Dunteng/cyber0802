@@ -14,6 +14,7 @@ export default async function AuthButton() {
   } = await supabase.auth.getUser();
 
   const whiteEmail = safeJsonParse(process.env.WHITE_EMAIL || '[]');
+  console.log(whiteEmail,'///');
   const nick = whiteEmail?.find((item: any) => item.email === user?.email)?.nick;
 
   if (!hasEnvVars) {
