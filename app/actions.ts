@@ -7,6 +7,11 @@ import { redirect } from "next/navigation";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
+
+  if (email && checkWhiteEmail(email)) {
+    return encodedRedirect("error", "/sign-up", "Email is error");
+  }
+
   const password = formData.get("password")?.toString();
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
