@@ -14,3 +14,11 @@ export function encodedRedirect(
 ) {
   return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
 }
+
+export function safeJsonParse(str: string) {
+  try {
+    return JSON.parse(str);
+  } catch (error) {
+    return null;
+  }
+}

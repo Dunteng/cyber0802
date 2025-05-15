@@ -1,6 +1,6 @@
 "use server";
 
-import { encodedRedirect } from "@/utils/utils";
+import { encodedRedirect, safeJsonParse } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -42,7 +42,14 @@ export const signUpAction = async (formData: FormData) => {
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+
+  const whiteEmail = safeJsonParse(process.env.WHITE_EMAIL || '[]');
+  if (!whiteEmail.includes(email)) {
+    return
+  }
+  
   const supabase = await createClient();
+
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
