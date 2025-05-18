@@ -10,6 +10,7 @@ export default async function Home() {
   if (!user) {
     return redirect("/sign-in");
   }
+  console.log('dunteng');
 
   return (
     <>
